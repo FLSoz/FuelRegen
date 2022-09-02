@@ -59,4 +59,31 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>del *.pdb
+@setlocal enableextensions enabledelayedexpansion
+
+set modname=FuelRegen
+set modpath="E:\Steam\steamapps\common\TerraTech\LocalMods\%25modname%25\"
+set unitypath="E:\Documents\Unity\Projects\TT Modding\Assets\Mods\%25modname%25\"
+echo !modpath!
+
+for %25%25I in (*) do (
+  if not "%25%25I" =="$(TargetFileName)" (
+    del "%25%25I"
+  )
+)
+
+if not exist !modpath! (
+echo Creating mod folder
+mkdir !modpath!
+)
+
+set e=$(TargetDir)..\&gt;nul
+
+echo Copying to game
+xcopy /S /Y /R "$(TargetFileName)" !modpath!
+echo Copying to Unity
+xcopy /S /Y /R "$(TargetFileName)" !unitypath!</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -49,7 +49,7 @@ namespace FuelRegen
             }
         }
 
-        [HarmonyPatch(typeof(TechBooster), "FixedUpdate")]
+        [HarmonyPatch(typeof(TechBooster), "OnFixedUpdate")]
         public static class Patch
         {
             private static readonly MethodInfo get_Boosters = typeof(TechBooster).GetProperty("BoostersFiring", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetGetMethod();
