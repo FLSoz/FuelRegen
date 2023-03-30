@@ -7,46 +7,15 @@ namespace FuelRegen
     public class FuelRegenPatch : ModBase
     {
         internal static Harmony harmony;
-        internal const float scale = 2.0f;
-
         public override void DeInit()
         {
             harmony.UnpatchAll("com.flsoz.ttmods.fuelregenpatch");
-
-            Singleton.camera.farClipPlane /= scale;
-
-            CameraManager manCamera = Singleton.Manager<CameraManager>.inst;
-            manCamera.SetDetailDist01(manCamera.DetailDist01 / scale);
-            manCamera.SetDrawDist01(manCamera.DrawDist01 / scale);
         }
 
         public override void Init()
         {
             harmony = new Harmony("com.flsoz.ttmods.fuelregenpatch");
             harmony.PatchAll();
-
-            Singleton.camera.farClipPlane *= scale;
-
-            CameraManager manCamera = Singleton.Manager<CameraManager>.inst;
-            manCamera.SetDetailDist01(manCamera.DetailDist01);
-            manCamera.SetDrawDist01(manCamera.DrawDist01);
-        }
-
-        [HarmonyPatch(typeof(CameraManager), "SetDrawDist01")]
-        public static class PatchDrawDist
-        {
-            public static void Prefix(ref float drawDist01)
-            {
-                drawDist01 = drawDist01 * scale;
-            }
-        }
-        [HarmonyPatch(typeof(CameraManager), "SetDetailDist01")]
-        public static class PatchDetailDist
-        {
-            public static void Prefix(ref float detailDist01)
-            {
-                detailDist01 = detailDist01 * scale;
-            }
         }
 
         [HarmonyPatch(typeof(TechBooster), "OnFixedUpdate")]
